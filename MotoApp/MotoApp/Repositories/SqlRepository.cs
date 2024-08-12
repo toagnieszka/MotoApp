@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using MotoApp.Entities;
 
-//public delegate void ItemAdded<T>(T item);
+public delegate void ItemAdded<T>(T item);
 
 public class SqlRepository<T> : IRepository<T> where T : class, IEntity
 {
@@ -26,19 +26,19 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     }
 
     public T GetById(int id)
-    { 
+    {
         return _dbSet.Find(id);
     }
 
     public void Add(T item)
     {
         _dbSet.Add(item);
-        _itemAddedCallBack?.Invoke(item);  
+        _itemAddedCallBack?.Invoke(item);
         ItemAdded.Invoke(this, item);
-        
+
     }
 
-    public void Remove (T item) 
+    public void Remove(T item)
     {
         _dbSet.Remove(item);
     }
