@@ -23,7 +23,44 @@ void EmployeeRepository_ItemAdded(object? sender, Employee e)
 }
 #endregion
 
-#region Console
+#region Add Methods
+void AddEmployee(IRepository<Employee> repository)
+{
+    var employee = new[]
+    {
+       new Employee {FirstName = employeeName},
+   };
+
+    repository.AddBatch(employee);
+}
+
+static void EmployeeAdded(Employee item)
+{
+    Console.WriteLine($"{item.FirstName} added");
+}
+
+void AddManager(IRepository<Manager> repository)
+{
+    var manager = new[]
+     {
+       new Manager {FirstName = managerName},
+   };
+
+    repository.AddBatch(manager);
+}
+
+void AddBusinessPartner(IRepository<BusinessPartner> repository)
+{
+    var businessPartner = new[]
+     {
+       new BusinessPartner {Name = businessPartnerName},
+   };
+
+    repository.AddBatch(businessPartner);
+}
+#endregion
+
+#region Other Methods
 static void WriteAllToConsole(IReadRepository<IEntity> repository)
 {
     var items = repository.GetAll();
@@ -31,10 +68,9 @@ static void WriteAllToConsole(IReadRepository<IEntity> repository)
     {
         Console.WriteLine(item);
     }
-} 
-#endregion
+}
 
-void IterAll(SqlRepository<IEntity> repository, int id)
+void RemoveById<T>(SqlRepository<T> repository, int id) where T : class, IEntity
 {
     var items = repository.GetAll();
     foreach (var item in items)
@@ -44,12 +80,13 @@ void IterAll(SqlRepository<IEntity> repository, int id)
             repository.Remove(item);
         }
     }
+    repository.Save();
 }
+#endregion
 
 Console.WriteLine("Witaj w MotoApp");
 Console.WriteLine("==========================\n");
 Console.WriteLine("Aplikacja służy do obsługi danych dotyczących pracowników oraz biznes partnerów\n\n");
-
 
 while (activeApp)
 {
@@ -75,51 +112,51 @@ while (activeApp)
         Console.WriteLine("Którego pracownika chcesz usunąć?\n");
         WriteAllToConsole(employeeRepository);
         Console.WriteLine("\nWpisz jego ID:");
-        var input = Console.ReadLine();
-        int id = int.Parse(input);
-        IterAll(employeeRepository, id);
+        int id = int.Parse(Console.ReadLine());
+        RemoveById(employeeRepository, id);
     }
     else if (userChoice == 4)
     {
-        Console.WriteLine("\nPodaj imię pracownika:\n");
+        WriteAllToConsole(managerRepository); 
+    }
+    else if (userChoice == 5)
+    {
+        Console.WriteLine("\nPodaj imię managera:\n");
         managerName = Console.ReadLine();
         AddManager(managerRepository);
     }
+    else if (userChoice == 6)
+    {
+        Console.WriteLine("Którego managera chcesz usunąć?\n");
+        WriteAllToConsole(managerRepository);
+        Console.WriteLine("\nWpisz jego ID:"); 
+        int id = int.Parse(Console.ReadLine());
+        RemoveById(managerRepository, id);
+    }
+    else if (userChoice == 7)
+    {
+        WriteAllToConsole(businessPartnerRepository);
+    }
+    else if (userChoice == 8)
+    {
+        Console.WriteLine("\nPodaj nazwę biznes partnera:\n");
+        businessPartnerName = Console.ReadLine();
+        AddBusinessPartner(businessPartnerRepository);
+    }
+    else if (userChoice == 9)
+    {
+        Console.WriteLine("Którego biznes partnera chcesz usunąć?\n");
+        WriteAllToConsole(businessPartnerRepository);
+        Console.WriteLine("\nWpisz jego ID:");
+        int id = int.Parse(Console.ReadLine());
+        RemoveById(businessPartnerRepository, id);
+    }
+    else
+    { 
+        activeApp = false;
+    }
 }
 
-    void AddEmployee(IRepository<Employee> repository)
-    {
-        var employee = new[]
-        {
-       new Employee {FirstName = employeeName},
-   };
-
-        repository.AddBatch(employee);
-    }
-
-    static void EmployeeAdded(Employee item)
-    {
-        Console.WriteLine($"{item.FirstName} added");
-    }
-
-    void AddManager(IRepository<Manager> repository)
-    {
-        var manager = new[]
-         {
-       new Manager {FirstName = managerName},
-   };
-
-        repository.AddBatch(manager);
-    }
-
-    void AddBusinessPartner(IRepository<BusinessPartner> repository)
-    {
-        var businessPartner = new[]
-         {
-       new BusinessPartner {Name = businessPartnerName},
-   };
-
-        repository.AddBatch(businessPartner);
-    }
+  
 
 
