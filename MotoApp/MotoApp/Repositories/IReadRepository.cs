@@ -7,5 +7,7 @@ namespace MotoApp.Repositories
         IEnumerable<T> GetAll();
 
         T GetById(int id);
+
+        IEnumerable<T> ItemsToList();
     }
 }

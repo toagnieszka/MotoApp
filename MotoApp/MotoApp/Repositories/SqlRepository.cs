@@ -3,19 +3,15 @@
 using Microsoft.EntityFrameworkCore;
 using MotoApp.Entities;
 
-public delegate void ItemAdded<T>(T item);
-
 public class SqlRepository<T> : IRepository<T> where T : class, IEntity
 {
     private readonly DbSet<T> _dbSet;
     private readonly DbContext _dbContext;
-    private readonly Action<T>? _itemAddedCallBack;
-
-    public SqlRepository(DbContext dbContext, Action<T>? itemAddedCallBack = null)
+    
+    public SqlRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<T>();
-        _itemAddedCallBack = itemAddedCallBack;
     }
 
     public event EventHandler<T>? ItemAdded;
@@ -32,8 +28,8 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity
 
     public void Add(T item)
     {
+
         _dbSet.Add(item);
-        _itemAddedCallBack?.Invoke(item);
         ItemAdded.Invoke(this, item);
 
     }
@@ -47,4 +43,10 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     {
         _dbContext.SaveChanges();
     }
+
+    public IEnumerable<T> ItemsToList()
+    {  
+        return _dbSet.ToList(); 
+    }
+
 }

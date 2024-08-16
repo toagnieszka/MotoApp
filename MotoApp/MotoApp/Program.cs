@@ -6,44 +6,84 @@ using MotoApp.Repositories.Extensions;
 #region Global Variables
 var activeApp = true;
 string employeeName = null;
+string employeeLastName = null;
 string managerName = null;
+string managerLastName = null;
 string businessPartnerName = null;
+var employeeRepository = new ListRepository<Employee>();
+var managerRepository = new ListRepository<Manager>();
+var businessPartnerRepository = new ListRepository<BusinessPartner>();
+const string auditFile = "AuditFile.json";
 #endregion
 
-#region Repositories
-var employeeRepository = new SqlRepository<Employee>(new MotoAppDbContext(), EmployeeAdded);
-var managerRepository = new SqlRepository<Manager>(new MotoAppDbContext());
-var businessPartnerRepository = new SqlRepository<BusinessPartner>(new MotoAppDbContext());
+#region Events
+employeeRepository.ItemAdded += EmployeeAdded;
+managerRepository.ItemAdded += ManagerAdded;
+businessPartnerRepository.ItemAdded += BusinessPartnerAdded;
 
-employeeRepository.ItemAdded += EmployeeRepository_ItemAdded;
-
-void EmployeeRepository_ItemAdded(object? sender, Employee e)
+static void EmployeeAdded(object? sender, Employee item)
 {
-    Console.WriteLine($"Employee added => {e.FirstName} from {sender?.GetType().Name}");
+    Console.WriteLine($"{item.FirstName} {item.LastName} added");
+    string json = $"[{DateTime.Now}]-EmployeeAdded-[{item.FirstName} {item.LastName}]";
+    File.WriteAllText( auditFile, json );
+}
+static void ManagerAdded(object? sender, Manager item)
+{
+    Console.WriteLine($"{item.FirstName} {item.LastName} added");
+    string json = $"[{DateTime.Now}]-ManagerAdded-[{item.FirstName} {item.LastName}]";
+    File.WriteAllText(auditFile, json);
+}
+static void BusinessPartnerAdded(object? sender, BusinessPartner item)
+{
+    Console.WriteLine($"{item.Name} added");
+    string json = $"[{DateTime.Now}]-BusinessPartnerAdded-[{item.Name}]";
+    File.WriteAllText(auditFile, json);
+}
+
+employeeRepository.ItemRemoved += EmployeeRemoved;
+managerRepository.ItemRemoved += ManagerRemoved;
+businessPartnerRepository.ItemRemoved += BusinessPartnerRemoved;
+
+static void EmployeeRemoved(object? sender, Employee item)
+{
+    Console.WriteLine($"{item.FirstName} {item.LastName} removed");
+    string json = $"[{DateTime.Now}]-EmployeeDeleted-[{item.FirstName} {item.LastName}]";
+    File.WriteAllText(auditFile, json);
+}
+static void ManagerRemoved(object? sender, Manager item)
+{
+    Console.WriteLine($"{item.FirstName} {item.LastName} removed");
+    string json = $"[{DateTime.Now}]-ManagerDeleted-[{item.FirstName} {item.LastName}]";
+    File.WriteAllText(auditFile, json);
+}
+static void BusinessPartnerRemoved(object? sender, BusinessPartner item)
+{
+    Console.WriteLine($"{item.Name} removed");
+    string json = $"[{DateTime.Now}]-BusinessPartnerDeleted-[{item.Name}]";
+    File.WriteAllText(auditFile, json);
 }
 #endregion
 
 #region Add Methods
 void AddEmployee(IRepository<Employee> repository)
 {
+    repository.ItemsToList();
     var employee = new[]
     {
-       new Employee {FirstName = employeeName},
-   };
+                new Employee {FirstName = employeeName, LastName = employeeLastName},
+            };
 
     repository.AddBatch(employee);
 }
 
-static void EmployeeAdded(Employee item)
-{
-    Console.WriteLine($"{item.FirstName} added");
-}
+
 
 void AddManager(IRepository<Manager> repository)
 {
+    repository.ItemsToList();
     var manager = new[]
      {
-       new Manager {FirstName = managerName},
+       new Manager {FirstName = managerName, LastName = managerLastName},
    };
 
     repository.AddBatch(manager);
@@ -51,6 +91,7 @@ void AddManager(IRepository<Manager> repository)
 
 void AddBusinessPartner(IRepository<BusinessPartner> repository)
 {
+    repository.ItemsToList();
     var businessPartner = new[]
      {
        new BusinessPartner {Name = businessPartnerName},
@@ -63,15 +104,24 @@ void AddBusinessPartner(IRepository<BusinessPartner> repository)
 #region Other Methods
 static void WriteAllToConsole(IReadRepository<IEntity> repository)
 {
+    repository.ItemsToList();
     var items = repository.GetAll();
-    foreach (var item in items)
+    if (items != null)
     {
-        Console.WriteLine(item);
+        foreach (var item in items)
+        {
+            Console.WriteLine(item);
+        }
+    }
+    else 
+    {
+        Console.WriteLine("W tej liście nie znajduje się jeszcze żaden element");
     }
 }
 
-void RemoveById<T>(SqlRepository<T> repository, int id) where T : class, IEntity
+void RemoveById<T>(ListRepository<T> repository, int id) where T : class, IEntity
 {
+    repository.ItemsToList();
     var items = repository.GetAll();
     foreach (var item in items)
     {
@@ -105,31 +155,35 @@ while (activeApp)
     {
         Console.WriteLine("\nPodaj imię pracownika:\n");
         employeeName = Console.ReadLine();
+        Console.WriteLine("\nPodaj nazwisko pracownika:\n");
+        employeeLastName = Console.ReadLine();
         AddEmployee(employeeRepository);
     }
     else if (userChoice == 3)
     {
-        Console.WriteLine("Którego pracownika chcesz usunąć?\n");
+        Console.WriteLine("\nKtórego pracownika chcesz usunąć?\n");
         WriteAllToConsole(employeeRepository);
-        Console.WriteLine("\nWpisz jego ID:");
+        Console.WriteLine("\nWpisz jego ID:\n");
         int id = int.Parse(Console.ReadLine());
         RemoveById(employeeRepository, id);
     }
     else if (userChoice == 4)
     {
-        WriteAllToConsole(managerRepository); 
+        WriteAllToConsole(managerRepository);
     }
     else if (userChoice == 5)
     {
         Console.WriteLine("\nPodaj imię managera:\n");
         managerName = Console.ReadLine();
+        Console.WriteLine("\nPodaj nazwisko managera:\n");
+        managerLastName = Console.ReadLine();
         AddManager(managerRepository);
     }
     else if (userChoice == 6)
     {
-        Console.WriteLine("Którego managera chcesz usunąć?\n");
+        Console.WriteLine("\nKtórego managera chcesz usunąć?\n");
         WriteAllToConsole(managerRepository);
-        Console.WriteLine("\nWpisz jego ID:"); 
+        Console.WriteLine("\nWpisz jego ID:\n");
         int id = int.Parse(Console.ReadLine());
         RemoveById(managerRepository, id);
     }
@@ -145,18 +199,15 @@ while (activeApp)
     }
     else if (userChoice == 9)
     {
-        Console.WriteLine("Którego biznes partnera chcesz usunąć?\n");
+        Console.WriteLine("\nKtórego biznes partnera chcesz usunąć?\n");
         WriteAllToConsole(businessPartnerRepository);
-        Console.WriteLine("\nWpisz jego ID:");
+        Console.WriteLine("\nWpisz jego ID:\n");
         int id = int.Parse(Console.ReadLine());
         RemoveById(businessPartnerRepository, id);
     }
-    else
-    { 
+    else if (userChoice == 10) 
+    {
         activeApp = false;
     }
+    else { Console.WriteLine("Niepoprawna wartość"); }
 }
-
-  
-
-
