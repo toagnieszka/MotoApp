@@ -15,6 +15,7 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     }
 
     public event EventHandler<T>? ItemAdded;
+    public event EventHandler<T>? ItemRemoved;
 
     public IEnumerable<T> GetAll()
     {
