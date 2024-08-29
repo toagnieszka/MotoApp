@@ -1,6 +1,6 @@
-﻿namespace MotoApp.Repositories;
+﻿namespace MotoApp.Data.Repositories;
 
-using MotoApp.Entities;
+using MotoApp.Data.Entities;
 using System.Text.Json;
 
 public class ListRepository<T> : IRepository<T> where T : class, IEntity

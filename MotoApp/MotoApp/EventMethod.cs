@@ -1,8 +1,8 @@
 ﻿using MotoApp.DataProviders;
-using MotoApp.Entities;
-using MotoApp.Repositories;
 using MotoApp;
 using System.Text.Json;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 
 namespace MotoApp
 {

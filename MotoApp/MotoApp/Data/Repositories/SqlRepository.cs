@@ -1,13 +1,13 @@
-﻿namespace MotoApp.Repositories;
+﻿namespace MotoApp.Data.Repositories;
 
 using Microsoft.EntityFrameworkCore;
-using MotoApp.Entities;
+using MotoApp.Data.Entities;
 
 public class SqlRepository<T> : IRepository<T> where T : class, IEntity
 {
     private readonly DbSet<T> _dbSet;
     private readonly DbContext _dbContext;
-    
+
     public SqlRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
@@ -46,8 +46,8 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity
     }
 
     public IEnumerable<T> ItemsToList()
-    {  
-        return _dbSet.ToList(); 
+    {
+        return _dbSet.ToList();
     }
 
 }

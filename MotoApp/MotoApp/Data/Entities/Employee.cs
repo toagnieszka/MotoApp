@@ -1,7 +1,7 @@
 ﻿using MotoApp.Repositories;
 using MotoApp.Repositories.Extensions;
 
-namespace MotoApp.Entities
+namespace MotoApp.Data.Entities
 {
     public class Employee : EntityBase
     {
@@ -12,8 +12,8 @@ namespace MotoApp.Entities
         public override string ToString()
         { return $"First name: {FirstName}, Last name: {LastName} ID: {Id}"; }
 
-        
 
-        
+
+
     }
 }

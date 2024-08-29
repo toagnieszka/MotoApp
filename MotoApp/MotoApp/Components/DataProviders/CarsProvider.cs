@@ -1,10 +1,9 @@
-﻿
-using MotoApp.Entities;
-using MotoApp.Repositories;
+﻿using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace MotoApp.DataProviders
+namespace MotoApp.Components.DataProviders
 {
     public class CarsProvider : ICarsProvider
     {
@@ -16,7 +15,7 @@ namespace MotoApp.DataProviders
             _carRepository = carRepository;
         }
 
-        public List<Car> GetCarsByBrand(string brand) 
+        public List<Car> GetCarsByBrand(string brand)
         {
             var cars = _carRepository.GetAll();
             return cars.Where(cars => cars.Brand == brand).ToList();

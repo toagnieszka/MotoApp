@@ -1,7 +1,7 @@
-﻿using MotoApp.DataProviders;
-using MotoApp.Entities;
-using MotoApp.Repositories;
-using MotoApp.Repositories.Extensions;
+﻿using MotoApp.Components.DataProviders;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
+using MotoApp.Data.Repositories.Extensions;
 
 namespace MotoApp
 {

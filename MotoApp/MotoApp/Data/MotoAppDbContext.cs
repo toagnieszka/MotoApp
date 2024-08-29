@@ -1,7 +1,7 @@
 ﻿namespace MotoApp.Data;
 
 using Microsoft.EntityFrameworkCore;
-using MotoApp.Entities;
+using MotoApp.Data.Entities;
 
 public class MotoAppDbContext : DbContext
 {
