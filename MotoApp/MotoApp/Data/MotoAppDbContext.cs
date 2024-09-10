@@ -9,7 +9,7 @@ public class MotoAppDbContext : DbContext
 
     public DbSet<Manager> Manager => Set<Manager>();
 
-    public DbSet<Car> BusinessPartners => Set<Car>();
+    public DbSet<Car> Car => Set<Car>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
