@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MotoApp;
+using MotoApp.Components.CsvReader;
 using MotoApp.Components.DataProviders;
 using MotoApp.Data.Entities;
 using MotoApp.Data.Repositories;
@@ -12,6 +13,7 @@ services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
 services.AddSingleton<ICarsProvider, CarsProvider>();
 services.AddSingleton<IEventMethod, EventMethod>();
 services.AddSingleton<IUserCommunication, UserCommunication>();
+services.AddSingleton<ICsvReader, CsvReader>();
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetService<IApp>()!;

@@ -1,5 +1,4 @@
-﻿using MotoApp.Repositories;
-using MotoApp.Repositories.Extensions;
+﻿
 
 namespace MotoApp.Data.Entities
 {
@@ -11,9 +10,5 @@ namespace MotoApp.Data.Entities
 
         public override string ToString()
         { return $"First name: {FirstName}, Last name: {LastName} ID: {Id}"; }
-
-
-
-
     }
 }

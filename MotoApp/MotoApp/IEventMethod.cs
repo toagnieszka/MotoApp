@@ -1,4 +1,4 @@
-﻿using MotoApp.Entities;
+﻿
 
 namespace MotoApp
 {
