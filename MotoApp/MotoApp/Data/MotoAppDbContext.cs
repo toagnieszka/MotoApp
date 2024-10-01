@@ -5,16 +5,14 @@ using MotoApp.Data.Entities;
 
 public class MotoAppDbContext : DbContext
 {
+    public MotoAppDbContext(DbContextOptions<MotoAppDbContext> options) 
+        : base(options) 
+    {
+    }
+
     public DbSet<Employee> Employees => Set<Employee>();
 
-    public DbSet<Manager> Manager => Set<Manager>();
+    public DbSet<BusinessPartner> BusinessPartner => Set<BusinessPartner>();
 
     public DbSet<Car> Car => Set<Car>();
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseInMemoryDatabase("StorageAppDb");
-    }
 }
-
