@@ -12,7 +12,7 @@ public class MotoAppDbContext : DbContext
 
     public DbSet<Employee> Employees => Set<Employee>();
 
-    public DbSet<BusinessPartner> BusinessPartner => Set<BusinessPartner>();
+    public DbSet<BusinessPartner> BusinessPartners => Set<BusinessPartner>();
 
-    public DbSet<Car> Car => Set<Car>();
+    public DbSet<Car> Cars => Set<Car>();
 }

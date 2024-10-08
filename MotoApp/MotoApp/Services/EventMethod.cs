@@ -20,12 +20,14 @@ namespace MotoApp
             _businessPartnerRepository = businessPartnerRepository;
             _carRepository = carRepository;
         }
+
         public void UseEvents()
         {
             _employeeRepository.ItemAdded += EmployeeAdded;
             _employeeRepository.ItemRemoved += EmployeeRemoved;
             _businessPartnerRepository.ItemRemoved += BusinessPartnerRemoved;
         }
+
         private static void EmployeeAdded(object? sender, Employee item)
         {
             Console.WriteLine($"{item.FirstName} {item.LastName} added");
@@ -34,6 +36,7 @@ namespace MotoApp
                 writer.WriteLine($"[{DateTime.Now}]-EmployeeAdded-[{item.FirstName} {item.LastName}]");
             }
         }
+
         private static void EmployeeRemoved(object? sender, Employee item)
         {
             Console.WriteLine($"{item.FirstName} {item.LastName} removed");
@@ -42,6 +45,7 @@ namespace MotoApp
                 writer.WriteLine($"[{DateTime.Now}]-EmployeeDeleted-[{item.FirstName} {item.LastName}]");
             }
         }
+
         private static void BusinessPartnerRemoved(object? sender, BusinessPartner item)
         {
             Console.WriteLine($"{item.Name} {item.Id} removed");

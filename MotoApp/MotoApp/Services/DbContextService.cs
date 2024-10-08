@@ -25,7 +25,7 @@ namespace MotoApp.Services
 
             foreach (var car in cars)
             {
-                _dbContext.Car.Add(new Car()
+                _dbContext.Cars.Add(new Car()
                 {
                     Manufacturer = car.Manufacturer,
                     Name = car.Name,
@@ -47,7 +47,7 @@ namespace MotoApp.Services
 
             foreach (var businessPartner in businessPartners)
             {
-                _dbContext.BusinessPartner.Add(new BusinessPartner()
+                _dbContext.BusinessPartners.Add(new BusinessPartner()
                 {
                     Name = businessPartner.Name,
                     Country = businessPartner.Country,
@@ -80,7 +80,7 @@ namespace MotoApp.Services
 
         public void ReadAllCarsFromDb()
         {
-            var carsFromDb = _dbContext.Car.ToList();
+            var carsFromDb = _dbContext.Cars.ToList();
             foreach (var car in carsFromDb)
             {
                 Console.WriteLine($"{car.Name}: {car.Combined}, ID: {car.Id}");
@@ -89,7 +89,7 @@ namespace MotoApp.Services
 
         public void ReadAllBusinessPartnersFromDb()
         {
-            var businessPartnersFromDb = _dbContext.BusinessPartner.ToList();
+            var businessPartnersFromDb = _dbContext.BusinessPartners.ToList();
             foreach (var businessPartner in businessPartnersFromDb)
             {
                 Console.WriteLine($"{businessPartner.Name}, ID: {businessPartner.Id}");
@@ -107,13 +107,13 @@ namespace MotoApp.Services
 
         public Car? FindCarById(int id)
         {
-            return _dbContext.Car.FirstOrDefault(x => x.Id == id);
+            return _dbContext.Cars.FirstOrDefault(x => x.Id == id);
         }
 
         public BusinessPartner? FindBusinessPartnerById(int id)
         {
 
-            return _dbContext.BusinessPartner.FirstOrDefault(x => x.Id == id);
+            return _dbContext.BusinessPartners.FirstOrDefault(x => x.Id == id);
         }
 
         public Employee? FindEmployeeById(int id)
@@ -127,7 +127,7 @@ namespace MotoApp.Services
             Console.WriteLine("\nWybierz który samochód chcesz usunąć wpisując jego ID:\n");
             int id = int.Parse(Console.ReadLine());
             var car = FindCarById(id);
-            _dbContext.Car.Remove(car);
+            _dbContext.Cars.Remove(car);
             _dbContext.SaveChanges();
         }
 
@@ -137,7 +137,7 @@ namespace MotoApp.Services
             Console.WriteLine("\nWybierz którego biznes partnera chcesz usunąć wpisując jego ID:\n");
             int id = int.Parse(Console.ReadLine());
             var businessPartner = FindBusinessPartnerById(id);
-            _dbContext.BusinessPartner.Remove(businessPartner);
+            _dbContext.BusinessPartners.Remove(businessPartner);
             _dbContext.SaveChanges();
         }
 
