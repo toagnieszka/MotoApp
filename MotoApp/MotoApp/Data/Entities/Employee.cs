@@ -1,6 +1,4 @@
-﻿
-
-namespace MotoApp.Data.Entities
+﻿namespace MotoApp.Data.Entities
 {
     public class Employee : EntityBase
     {

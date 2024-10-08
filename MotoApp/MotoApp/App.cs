@@ -3,9 +3,7 @@
     public class App : IApp
     {
         private readonly IEventMethod _eventMethod;
-        private readonly IUserCommunication _userCommunication;
-
-       
+        private readonly IUserCommunication _userCommunication;       
 
         public App(
             IEventMethod eventsHandler,

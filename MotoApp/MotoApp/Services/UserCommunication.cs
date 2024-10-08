@@ -4,7 +4,6 @@ using MotoApp.Data.Repositories.Extensions;
 
 namespace MotoApp.Services
 {
-
     public class UserCommunication : IUserCommunication
     {
         private readonly IRepository<Employee> _employeeRepository;

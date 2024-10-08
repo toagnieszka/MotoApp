@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using MotoApp.Data.Entities;
 
 namespace MotoApp.Data.Entities.Extensions
 {

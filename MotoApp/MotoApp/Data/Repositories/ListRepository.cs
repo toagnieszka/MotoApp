@@ -11,10 +11,6 @@ public class ListRepository<T> : IRepository<T> where T : class, IEntity
     public event EventHandler<T>? ItemAdded;
     public event EventHandler<T>? ItemRemoved;
 
-    public ListRepository()
-    {
-    }
-
     public IEnumerable<T> GetAll()
     {
         return _items.ToList();

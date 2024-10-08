@@ -11,8 +11,6 @@ namespace MotoApp
         private readonly IRepository<BusinessPartner> _businessPartnerRepository;
         private readonly IRepository<Car> _carRepository;
 
-
-
         public EventMethod(
             IRepository<Employee> employeeRepository,
             IRepository<BusinessPartner> businessPartnerRepository,
@@ -22,16 +20,12 @@ namespace MotoApp
             _businessPartnerRepository = businessPartnerRepository;
             _carRepository = carRepository;
         }
-
-
         public void UseEvents()
         {
             _employeeRepository.ItemAdded += EmployeeAdded;
             _employeeRepository.ItemRemoved += EmployeeRemoved;
             _businessPartnerRepository.ItemRemoved += BusinessPartnerRemoved;
         }
-
-
         private static void EmployeeAdded(object? sender, Employee item)
         {
             Console.WriteLine($"{item.FirstName} {item.LastName} added");
